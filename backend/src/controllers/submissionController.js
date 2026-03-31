@@ -4,11 +4,15 @@ const User = require("../models/User");
 const PDFDocument = require("pdfkit");
 const { renderGenAdminPdf } = require("../forms/genadmin/pdfGenerator");
 const { renderSecurityCampusLeavePermissionForFemaleStudentsPdf } = require("../forms/security/SecurityCampusLeavePermissionForFemaleStudents");
+const { renderSecurityDayScholarVehiclePermitPdf } = require("../forms/security/SecurityDayScholarVehiclePermit");
+const { renderSecurityMessWorkersPdf } = require("../forms/security/SecurityMessWorkers");
 const { renderComputerCenterRequestingLdapAccountPdf } = require("../forms/cc/ComputerCenterRequestingLdapAccountCreationOfProjectStaffTemporaryStaff");
 const { getResponseValue } = require("../utils/pdfUtils");
 
 const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
 const SECURITY_CAMPUS_LEAVE_FEMALE_CODE = "security-campus-leave-female";
+const SECURITY_DAY_SCHOLAR_VEHICLE_PERMIT_CODE = "security-day-scholar-vehicle-permit";
+const SECURITY_MESS_WORKERS_CODE = "security-mess-workers";
 const CC_LDAP_ACCOUNT_REQUEST_CODE = "cc-ldap-account-request";
 
 // @desc Submit a form
@@ -229,6 +233,8 @@ const generateSubmissionPDF = async (req, res) => {
     const templateCode = submission.template?.code || "";
     const isGenAdmin = templateCode === GEN_ADMIN_TEMPLATE_CODE;
     const isSecurityCampusLeaveFemale = templateCode === SECURITY_CAMPUS_LEAVE_FEMALE_CODE;
+    const isSecurityDayScholarVehiclePermit = templateCode === SECURITY_DAY_SCHOLAR_VEHICLE_PERMIT_CODE;
+    const isSecurityMessWorkers = templateCode === SECURITY_MESS_WORKERS_CODE;
     const isComputerCenterLdapRequest = templateCode === CC_LDAP_ACCOUNT_REQUEST_CODE;
     const doc = new PDFDocument({ margin: isGenAdmin ? 70 : 50, size: "A4" });
 
@@ -244,6 +250,10 @@ const generateSubmissionPDF = async (req, res) => {
       renderGenAdminPdf(doc, submission);
     } else if (isSecurityCampusLeaveFemale) {
       renderSecurityCampusLeavePermissionForFemaleStudentsPdf(doc, submission);
+    } else if (isSecurityDayScholarVehiclePermit) {
+      renderSecurityDayScholarVehiclePermitPdf(doc, submission);
+    } else if (isSecurityMessWorkers) {
+      renderSecurityMessWorkersPdf(doc, submission);
     } else if (isComputerCenterLdapRequest) {
       renderComputerCenterRequestingLdapAccountPdf(doc, submission);
     } else {

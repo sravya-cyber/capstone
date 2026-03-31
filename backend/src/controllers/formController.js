@@ -2,6 +2,8 @@ const FormTemplate = require("../models/FormTemplate");
 
 const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
 const SECURITY_CAMPUS_LEAVE_FEMALE_CODE = "security-campus-leave-female";
+const SECURITY_DAY_SCHOLAR_VEHICLE_PERMIT_CODE = "security-day-scholar-vehicle-permit";
+const SECURITY_MESS_WORKERS_CODE = "security-mess-workers";
 const CC_LDAP_ACCOUNT_REQUEST_CODE = "cc-ldap-account-request";
 
 const SECURITY_CAMPUS_LEAVE_FEMALE_TEMPLATE = {
@@ -20,6 +22,51 @@ const SECURITY_CAMPUS_LEAVE_FEMALE_TEMPLATE = {
     { label: "Companion 1 Roll No", name: "companion1RollNo", type: "text", required: false },
     { label: "Companion 2 Name", name: "companion2Name", type: "text", required: false },
     { label: "Companion 2 Roll No", name: "companion2RollNo", type: "text", required: false },
+  ],
+  approvalStages: [],
+};
+
+const SECURITY_DAY_SCHOLAR_VEHICLE_PERMIT_TEMPLATE = {
+  code: SECURITY_DAY_SCHOLAR_VEHICLE_PERMIT_CODE,
+  title: "Day Scholar Vehicle Permit & Parking Permission Form",
+  description: "IIT Patna day scholar vehicle permit and parking permission form for campus entry.",
+  section: "security",
+  fields: [
+    { label: "Name & Roll Number", name: "nameRollNumber", type: "text", required: true },
+    { label: "Mobile Number", name: "mobileNumber", type: "text", required: true },
+    { label: "Institute Email", name: "instituteEmail", type: "text", required: false },
+    { label: "Department", name: "department", type: "text", required: true },
+    { label: "Owner Name", name: "ownerName", type: "text", required: true },
+    { label: "Owner Relationship", name: "ownerRelationship", type: "text", required: false },
+    { label: "Vehicle Registration Number (RC)", name: "vehicleRegNo", type: "text", required: true },
+    { label: "Engine Number", name: "engineNumber", type: "text", required: false },
+    { label: "Chassis Number", name: "chassisNumber", type: "text", required: false },
+    { label: "Type of Vehicle", name: "vehicleType", type: "select", required: true, options: ["Car", "Bike", "Scooter", "Other"] },
+    { label: "Residential Address", name: "residentialAddress", type: "textarea", required: true },
+  ],
+  approvalStages: [],
+};
+
+const SECURITY_MESS_WORKERS_TEMPLATE = {
+  code: SECURITY_MESS_WORKERS_CODE,
+  title: "Mess Worker Initial Entry Form",
+  description: "Request form for entry of mess vendor/workers into IIT Patna campus.",
+  section: "security",
+  fields: [
+    { label: "Hostel Name", name: "hostelName", type: "text", required: true },
+    { label: "Vendor Representative Name", name: "vendorName", type: "text", required: true },
+    { label: "Worker 1 Name", name: "worker1Name", type: "text", required: true },
+    { label: "Worker 1 Aadhar", name: "worker1Aadhar", type: "text", required: true },
+    { label: "Worker 2 Name", name: "worker2Name", type: "text", required: false },
+    { label: "Worker 2 Aadhar", name: "worker2Aadhar", type: "text", required: false },
+    { label: "Worker 3 Name", name: "worker3Name", type: "text", required: false },
+    { label: "Worker 3 Aadhar", name: "worker3Aadhar", type: "text", required: false },
+    { label: "Worker 4 Name", name: "worker4Name", type: "text", required: false },
+    { label: "Worker 4 Aadhar", name: "worker4Aadhar", type: "text", required: false },
+    { label: "Worker 5 Name", name: "worker5Name", type: "text", required: false },
+    { label: "Worker 5 Aadhar", name: "worker5Aadhar", type: "text", required: false },
+    { label: "Worker 6 Name", name: "worker6Name", type: "text", required: false },
+    { label: "Worker 6 Aadhar", name: "worker6Aadhar", type: "text", required: false },
   ],
   approvalStages: [],
 };
@@ -89,6 +136,38 @@ const getSecurityCampusLeaveTemplate = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Failed to load security campus leave template" });
+  }
+};
+
+const getSecurityDayScholarVehiclePermitTemplate = async (req, res) => {
+  try {
+    let template = await FormTemplate.findOne({ code: SECURITY_DAY_SCHOLAR_VEHICLE_PERMIT_CODE });
+    if (!template) {
+      template = await FormTemplate.create({
+        ...SECURITY_DAY_SCHOLAR_VEHICLE_PERMIT_TEMPLATE,
+        createdBy: req.user.id,
+      });
+    }
+    return res.json(template);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to load security day scholar vehicle permit template" });
+  }
+};
+
+const getSecurityMessWorkersTemplate = async (req, res) => {
+  try {
+    let template = await FormTemplate.findOne({ code: SECURITY_MESS_WORKERS_CODE });
+    if (!template) {
+      template = await FormTemplate.create({
+        ...SECURITY_MESS_WORKERS_TEMPLATE,
+        createdBy: req.user.id,
+      });
+    }
+    return res.json(template);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to load security mess workers template" });
   }
 };
 
@@ -162,10 +241,19 @@ const getAllTemplates = async (req, res) => {
     // Ensure Security Campus Leave (Female) template exists
     let securityCampusLeaveTemplate = await FormTemplate.findOne({ code: SECURITY_CAMPUS_LEAVE_FEMALE_CODE });
     if (!securityCampusLeaveTemplate) {
-      await FormTemplate.create({
-        ...SECURITY_CAMPUS_LEAVE_FEMALE_TEMPLATE,
-        createdBy: req.user?.id || null,
-      });
+      await FormTemplate.create({ ...SECURITY_CAMPUS_LEAVE_FEMALE_TEMPLATE, createdBy: req.user?.id || null });
+    }
+
+    // Ensure Security Day Scholar Vehicle Permit template exists
+    let securityDsVehicleTemplate = await FormTemplate.findOne({ code: SECURITY_DAY_SCHOLAR_VEHICLE_PERMIT_CODE });
+    if (!securityDsVehicleTemplate) {
+      await FormTemplate.create({ ...SECURITY_DAY_SCHOLAR_VEHICLE_PERMIT_TEMPLATE, createdBy: req.user?.id || null });
+    }
+
+    // Ensure Security Mess Workers template exists
+    let securityMessWorkersTemplate = await FormTemplate.findOne({ code: SECURITY_MESS_WORKERS_CODE });
+    if (!securityMessWorkersTemplate) {
+      await FormTemplate.create({ ...SECURITY_MESS_WORKERS_TEMPLATE, createdBy: req.user?.id || null });
     }
 
     // Ensure Computer Center LDAP account request template exists
@@ -207,5 +295,7 @@ module.exports = {
   getMyTemplates,
   getGenAdminTemplate,
   getSecurityCampusLeaveTemplate,
+  getSecurityDayScholarVehiclePermitTemplate,
+  getSecurityMessWorkersTemplate,
   getComputerCenterLdapAccountRequestTemplate,
 };

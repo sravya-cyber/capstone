@@ -10,6 +10,8 @@ import Forms from "./pages/Forms";
 import FormFill from "./pages/FormFill";
 import GenAdminForm from "./forms/genadmin/GenAdminForm";  // self declaration form 
 import SecurityCampusLeavePermissionForFemaleStudents from "./forms/security/SecurityCampusLeavePermissionForFemaleStudents";
+import SecurityDayScholarVehiclePermit from "./forms/security/SecurityDayScholarVehiclePermit";
+import SecurityMessWorkers from "./forms/security/SecurityMessWorkers";
 import ComputerCenterLdapAccountRequestForm from "./forms/cc/ComputerCenterLdapAccountRequestForm";
 import Submissions from "./pages/Submissions";
 import Approvals from "./pages/Approvals";
@@ -81,6 +83,26 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <SecurityCampusLeavePermissionForFemaleStudents />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms/security-day-scholar-vehicle-permit"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <SecurityDayScholarVehiclePermit />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/forms/security-mess-workers"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <SecurityMessWorkers />
               </Layout>
             </PrivateRoute>
           }

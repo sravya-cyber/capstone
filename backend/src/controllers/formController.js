@@ -23,7 +23,36 @@ const SECURITY_CAMPUS_LEAVE_FEMALE_TEMPLATE = {
   ],
   approvalStages: [],
 };
-
+const ESTB_DEPARTURE_REJOINING_CODE = "estb-departure-rejoining-report";
+ 
+const ESTB_DEPARTURE_REJOINING_TEMPLATE = {
+  code: ESTB_DEPARTURE_REJOINING_CODE,
+  title: "Departure & Re-joining Report",
+  description: "Establishment departure and re-joining report form.",
+  section: "estb",
+  fields: [
+    { label: "Departure From Date", name: "departureFromDate", type: "text", required: false },
+    { label: "FN/AN", name: "departureFnAn", type: "text", required: false },
+    { label: "Out of Station Till", name: "departureOutOfStationTill", type: "text", required: false },
+    { label: "Address During Leave", name: "departureAddress", type: "text", required: false },
+    { label: "Contact Phone (if any)", name: "departureContactPhone", type: "text", required: false },
+    { label: "Departure Date", name: "departureDate", type: "date", required: false },
+    { label: "Name", name: "departureName", type: "text", required: true },
+    { label: "Employee No.", name: "departureEmpNo", type: "text", required: true },
+    { label: "Designation", name: "departureDesignation", type: "text", required: false },
+    { label: "Department/Section", name: "departureDepartment", type: "text", required: false },
+    { label: "Re-joining Date", name: "rejoiningDate", type: "text", required: false },
+    { label: "Re-joining FN/AN", name: "rejoiningFnAn", type: "text", required: false },
+    { label: "Leave From", name: "rejoiningLeaveFrom", type: "text", required: false },
+    { label: "Leave To", name: "rejoiningLeaveTo", type: "text", required: false },
+    { label: "Re-joining Sign Date", name: "rejoiningSignDate", type: "date", required: false },
+    { label: "Re-joining Name", name: "rejoiningName", type: "text", required: true },
+    { label: "Re-joining Emp. No.", name: "rejoiningEmpNo", type: "text", required: false },
+    { label: "Re-joining Designation", name: "rejoiningDesignation", type: "text", required: false },
+    { label: "Re-joining Department", name: "rejoiningDepartment", type: "text", required: false },
+  ],
+  approvalStages: [],
+};
 const CC_LDAP_ACCOUNT_REQUEST_TEMPLATE = {
   code: CC_LDAP_ACCOUNT_REQUEST_CODE,
   title: "REQUEST / REQUISITION FORM (For LDAP Account)",
@@ -109,7 +138,21 @@ const getComputerCenterLdapAccountRequestTemplate = async (req, res) => {
     return res.status(500).json({ message: "Failed to load computer center LDAP account request template" });
   }
 };
-
+const getEstbDepartureRejoiningTemplate = async (req, res) => {
+  try {
+    let template = await FormTemplate.findOne({ code: ESTB_DEPARTURE_REJOINING_CODE });
+    if (!template) {
+      template = await FormTemplate.create({
+        ...ESTB_DEPARTURE_REJOINING_TEMPLATE,
+        createdBy: req.user.id,
+      });
+    }
+    return res.json(template);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to load departure/rejoining template" });
+  }
+};
 // @desc Create new form template
 const createTemplate = async (req, res) => {
   try {
@@ -176,7 +219,13 @@ const getAllTemplates = async (req, res) => {
         createdBy: req.user?.id || null,
       });
     }
-
+    let estbDepartureTemplate = await FormTemplate.findOne({ code: ESTB_DEPARTURE_REJOINING_CODE });
+if (!estbDepartureTemplate) {
+  await FormTemplate.create({
+    ...ESTB_DEPARTURE_REJOINING_TEMPLATE,
+    createdBy: req.user?.id || null,
+  });
+}
     const templates = await FormTemplate.find()
       .populate("createdBy", "name email")
       .sort({ createdAt: -1 });
@@ -208,4 +257,5 @@ module.exports = {
   getGenAdminTemplate,
   getSecurityCampusLeaveTemplate,
   getComputerCenterLdapAccountRequestTemplate,
+   getEstbDepartureRejoiningTemplate,
 };

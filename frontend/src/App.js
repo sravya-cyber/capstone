@@ -11,7 +11,7 @@ import FormFill from "./pages/FormFill";
 import GenAdminForm from "./forms/genadmin/GenAdminForm";  // self declaration form 
 import SecurityCampusLeavePermissionForFemaleStudents from "./forms/security/SecurityCampusLeavePermissionForFemaleStudents";
 import ComputerCenterLdapAccountRequestForm from "./forms/cc/ComputerCenterLdapAccountRequestForm";
-import Submissions from "./pages/Submissions";
+import EstbDepartureRejoiningReportForm from "./forms/estb/EstbDepartureRejoiningReportForm";import Submissions from "./pages/Submissions";
 import Approvals from "./pages/Approvals";
 import PrivateRoute from "./components/PrivateRoute";
 import Layout from "./components/Layout";
@@ -105,6 +105,16 @@ function App() {
             </PrivateRoute>
           }
         />
+       <Route
+  path="/forms/estb-departure-rejoining-report"
+  element={
+    <PrivateRoute>
+      <Layout>
+        <EstbDepartureRejoiningReportForm />
+      </Layout>
+    </PrivateRoute>
+  }
+/>
         <Route
           path="/forms/:templateId/fill"
           element={

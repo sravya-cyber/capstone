@@ -39,8 +39,7 @@ const resolveSection = (template) => {
     return "cc";
   }
   if (section.includes("finance") || code.includes("finance")) return "fin";
-  if (section.includes("establishment") || code.includes("establishment")) return "estb";
-  if (section.includes("security") || code.includes("security")) return "security";
+if (section.includes("estb") || code.includes("estb") || section.includes("establishment")) return "estb";  if (section.includes("security") || code.includes("security")) return "security";
 
   // Keep uncategorized templates under HR until explicit metadata is added.
   return "hr";

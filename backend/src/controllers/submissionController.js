@@ -5,11 +5,13 @@ const PDFDocument = require("pdfkit");
 const { renderGenAdminPdf } = require("../forms/genadmin/pdfGenerator");
 const { renderSecurityCampusLeavePermissionForFemaleStudentsPdf } = require("../forms/security/SecurityCampusLeavePermissionForFemaleStudents");
 const { renderComputerCenterRequestingLdapAccountPdf } = require("../forms/cc/ComputerCenterRequestingLdapAccountCreationOfProjectStaffTemporaryStaff");
+const { renderEstbDepartureRejoiningReportPdf } = require("../forms/estb/renderEstbDepartureRejoiningReportPdf");
 const { getResponseValue } = require("../utils/pdfUtils");
 
 const GEN_ADMIN_TEMPLATE_CODE = "gen-admin";
 const SECURITY_CAMPUS_LEAVE_FEMALE_CODE = "security-campus-leave-female";
 const CC_LDAP_ACCOUNT_REQUEST_CODE = "cc-ldap-account-request";
+const ESTB_DEPARTURE_REJOINING_CODE = "estb-departure-rejoining-report";
 
 // @desc Submit a form
 // Body: { templateId, responses, parentSubmissionId? }
@@ -230,6 +232,8 @@ const generateSubmissionPDF = async (req, res) => {
     const isGenAdmin = templateCode === GEN_ADMIN_TEMPLATE_CODE;
     const isSecurityCampusLeaveFemale = templateCode === SECURITY_CAMPUS_LEAVE_FEMALE_CODE;
     const isComputerCenterLdapRequest = templateCode === CC_LDAP_ACCOUNT_REQUEST_CODE;
+    const isEstbDepartureRejoining = templateCode === ESTB_DEPARTURE_REJOINING_CODE;
+
     const doc = new PDFDocument({ margin: isGenAdmin ? 70 : 50, size: "A4" });
 
     res.setHeader("Content-Type", "application/pdf");
@@ -246,7 +250,9 @@ const generateSubmissionPDF = async (req, res) => {
       renderSecurityCampusLeavePermissionForFemaleStudentsPdf(doc, submission);
     } else if (isComputerCenterLdapRequest) {
       renderComputerCenterRequestingLdapAccountPdf(doc, submission);
-    } else {
+    } else if (isEstbDepartureRejoining) {
+  renderEstbDepartureRejoiningReportPdf(doc, submission);
+}else {
       // Header (logo placeholder + institute title)
       doc
         .fontSize(22)

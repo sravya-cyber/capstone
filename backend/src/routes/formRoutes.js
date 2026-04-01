@@ -6,6 +6,7 @@ const {
   getGenAdminTemplate,
   getSecurityCampusLeaveTemplate,
   getComputerCenterLdapAccountRequestTemplate,
+ getEstbDepartureRejoiningTemplate,
 } = require("../controllers/formController");
 
 const protect = require("../middleware/authMiddleware");
@@ -29,5 +30,6 @@ router.get("/security-campus-leave-permission-female/template", protect, getSecu
 
 // Computer Center – REQUEST / REQUISITION FORM (For LDAP Account)
 router.get("/computer-center-ldap-account-request/template", protect, getComputerCenterLdapAccountRequestTemplate);
+router.get("/estb-departure-rejoining-report/template", protect, getEstbDepartureRejoiningTemplate);
 
 module.exports = router;

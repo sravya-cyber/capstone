@@ -11,6 +11,7 @@ const {
   renderSecurityUndertakingRegardingWorkerConductAndResponsibilityPdf,
 } = require("../forms/security/SecurityUndertakingRegardingWorkerConductAndResponsibility");
 const { renderComputerCenterRequestingLdapAccountPdf } = require("../forms/cc/ComputerCenterRequestingLdapAccountCreationOfProjectStaffTemporaryStaff");
+const { renderEstbDepartureRejoiningReportPdf } = require("../forms/estb/renderEstbDepartureRejoiningReportPdf");
 const { renderFinanceProcurementRecommendationSanctionPdf } = require("../forms/fin/RecommendationCumSanctionSheetForPurchaseDoubleBidInr");
 const { renderComputerCenterFacultyPerformaPdf } = require("../forms/cc/ComputerCenterFacultyPerformaForm");
 const { renderComputerCenterFacultyDeclarationPdf } = require("../forms/cc/ComputerCenterFacultyDeclarationForm");
@@ -26,6 +27,7 @@ const SECURITY_VEHICLE_STICKER_REQUITION_MARRIED_SCHOLAR_CODE = "security-vehicl
 const SECURITY_UNDERTAKING_REGARDING_WORKER_CONDUCT_AND_RESPONSIBILITY_CODE =
   "security_undertaking_regarding_worker_conduct_and_responsibility";
 const CC_LDAP_ACCOUNT_REQUEST_CODE = "cc-ldap-account-request";
+const ESTB_DEPARTURE_REJOINING_CODE = "estb-departure-rejoining-report";
 const FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_CODE = "finance-procurement-recommendation-sanction-double-bid-inr";
 const CC_FACULTY_PERFORMA_CODE = "cc-faculty-performa";
 const CC_FACULTY_DECLARATION_CODE = "cc-faculty-declaration";
@@ -257,6 +259,9 @@ const generateSubmissionPDF = async (req, res) => {
     const isSecurityUndertakingRegardingWorkerConductAndResponsibility =
       templateCode === SECURITY_UNDERTAKING_REGARDING_WORKER_CONDUCT_AND_RESPONSIBILITY_CODE;
     const isComputerCenterLdapRequest = templateCode === CC_LDAP_ACCOUNT_REQUEST_CODE;
+    const isEstbDepartureRejoining = templateCode === ESTB_DEPARTURE_REJOINING_CODE;
+
+    const doc = new PDFDocument({ margin: isGenAdmin ? 70 : 50, size: "A4" });
     const isFinanceProcurementRecommendationSanction =
       templateCode === FINANCE_PROCUREMENT_RECOMMENDATION_SANCTION_CODE;
     const isComputerCenterFacultyPerforma = templateCode === CC_FACULTY_PERFORMA_CODE;
@@ -298,6 +303,9 @@ const generateSubmissionPDF = async (req, res) => {
       renderSecurityUndertakingRegardingWorkerConductAndResponsibilityPdf(doc, submission);
     } else if (isComputerCenterLdapRequest) {
       renderComputerCenterRequestingLdapAccountPdf(doc, submission);
+    } else if (isEstbDepartureRejoining) {
+  renderEstbDepartureRejoiningReportPdf(doc, submission);
+}else {
     } else if (isFinanceProcurementRecommendationSanction) {
       renderFinanceProcurementRecommendationSanctionPdf(doc, submission);
     } else if (isComputerCenterFacultyPerforma) {

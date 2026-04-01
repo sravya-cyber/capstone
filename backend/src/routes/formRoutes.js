@@ -10,6 +10,7 @@ const {
   getSecurityVehicleStickerRequitionForMarriedScholarTemplate,
   getSecurityUndertakingRegardingWorkerConductAndResponsibilityTemplate,
   getComputerCenterLdapAccountRequestTemplate,
+ getEstbDepartureRejoiningTemplate,
   getFinanceProcurementRecommendationSanctionTemplate,
   getComputerCenterFacultyPerformaTemplate,
   getComputerCenterFacultyDeclarationTemplate,
@@ -66,6 +67,7 @@ router.get(
 
 // Computer Center – REQUEST / REQUISITION FORM (For LDAP Account)
 router.get("/computer-center-ldap-account-request/template", protect, getComputerCenterLdapAccountRequestTemplate);
+router.get("/estb-departure-rejoining-report/template", protect, getEstbDepartureRejoiningTemplate);
 
 // Finance - Recommendation cum Sanction Sheet for Purchase (Double Bid Tendering - INR)
 router.get(

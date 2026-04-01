@@ -15,6 +15,7 @@ import SecurityRequisitionForVehicleSticker from "./forms/security/SecurityRequi
 import SecurityVehicleStickerRequitionForMarriedScholar from "./forms/security/SecurityVehicleStickerRequitionForMarriedScholar";
 import SecurityUndertakingRegardingWorkerConductAndResponsibility from "./forms/security/SecurityUndertakingRegardingWorkerConductAndResponsibility";
 import ComputerCenterLdapAccountRequestForm from "./forms/cc/ComputerCenterLdapAccountRequestForm";
+import EstbDepartureRejoiningReportForm from "./forms/estb/EstbDepartureRejoiningReportForm";import Submissions from "./pages/Submissions";
 import ComputerCenterFacultyPerformaForm from "./forms/cc/ComputerCenterFacultyPerformaForm";
 import ComputerCenterFacultyDeclarationForm from "./forms/cc/ComputerCenterFacultyDeclarationForm";
 import ComputerCenterEmailAccountRequestForm from "./forms/cc/ComputerCenterEmailAccountRequestForm";
@@ -164,6 +165,16 @@ function App() {
             </PrivateRoute>
           }
         />
+       <Route
+  path="/forms/estb-departure-rejoining-report"
+  element={
+    <PrivateRoute>
+      <Layout>
+        <EstbDepartureRejoiningReportForm />
+      </Layout>
+    </PrivateRoute>
+  }
+/>
         <Route
           path="/forms/cc-faculty-performa"
           element={
